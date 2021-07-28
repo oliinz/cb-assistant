@@ -1,0 +1,13 @@
+{
+   "name": "CB assistant",
+   "description": "CB Tool for calculating chances of winning.",
+   "version": "1.0",
+   "manifest_version": 3,
+   "action": {
+      "default_title": "Click to simulate battle"
+   },
+   "permissions": ["activeTab", "scripting"],
+   "background": {
+   "service_worker": "background.js"
+   }
+}
