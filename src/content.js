@@ -2,18 +2,21 @@
 (() => {
 
 // Find hero trait
+
 let heroTrait = document.querySelector('body > div > div.character-bar > div > \
  div.root.main-font > div.character-data-column.dark-bg-text > span.name.bold.character-name > span').classList[0];
 heroTrait = heroTrait.slice(0, heroTrait.length-5); 
 // console.log(heroTrait) // str, 'water', 'fire'
 
 // find hero power
+
 let heroPower = (document.querySelector('body > div > div.character-bar > div \
  > div.root.main-font > div.character-data-column.dark-bg-text > span.subtext.subtext-stats > span:nth-child(4)').textContent);
 heroPower = Number(heroPower.replaceAll(',', '')); 
 // console.log(heroPower) // int
 
 // find weapon trait 
+
 function getWeapTrait() {
    let trait = document.querySelector("body > div.app > \
    div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
@@ -26,7 +29,6 @@ function getWeapTrait() {
 let weapTrait = getWeapTrait();
 // console.log(weapTrait) // str, 'water', 'fire'
 
-// find bonus power, default to 0
 function getBonusPower() {
    let weapon = document.querySelector("body > div > div.content.dark-bg-text > \
    div > div > div > div > div.combat-enemy-container > div.col.weapon-selection > \
@@ -51,9 +53,10 @@ function getBonusPower() {
    };
 };
 
+// find bonus power, default to 0
+
 let bonusPower = getBonusPower()
 // console.log(bonusPower) // Int
-// find weapon stats trait
 
 function getAllWeapStats() {
    let statsDiv = document.querySelector("body > div > div.content.dark-bg-text > \
@@ -87,10 +90,12 @@ function getAllWeapStats() {
    } 
    return [statTraits, statPowers]
 }
+
+// find weapon stats trait
+
 let weapStats = getAllWeapStats()
 // console.log(weapStats) // Array of arrays, [[stats], [powers]]
 
-// find enemy traits
 function getEnemyTrait(enemyCount) {
    let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > \
    div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
@@ -106,19 +111,18 @@ function getEnemyPower(enemyCount) {
    return Number(power.slice(0, power.length-6))
 };
 
-let enemyTraits = [];
-let enemyPowers = [];
+// find enemy traits
+
+let enemyTraits = []; // [Strs], ['water', 'fire', 'lighting']
+let enemyPowers = []; // [Ints], [2344, 8443, 2333]
 
 for (let i = 0; i < 4; i++) {
    enemyTraits.push(getEnemyTrait(i+1))
    enemyPowers.push(getEnemyPower(i+1))
 }
 
-// console.log(enemyTraits) // [Strs], ['water', 'fire', 'lighting']
-// console.log(enemyPowers) // [Ints], [2344, 8443, 2333]
-
-
 // Define each element's strength and weakness
+
 const elementMatchups = {
    // Element: [Strength, Weakness]
    fire: ["earth", "water"],
@@ -127,8 +131,9 @@ const elementMatchups = {
    water: ["fire", "lightning"]
 }
 
-// Loops through the weapon's stats
 function getWeaponPower() {
+   // Loops through the weapon's stats
+
    let weaponPower = 1;
    let m;
    for (let i = 0; i < 3; i++) {
@@ -151,6 +156,7 @@ function getWeaponPower() {
 }
 
 function simulateBattle() {
+   // Generate roll for hero and enemies. Return array of rolls
 
    let weaponPower = getWeaponPower();
    let traitBonus = 0;
@@ -196,9 +202,12 @@ function simulateBattle() {
 }
 
 function getPercentages() {
-   let totalWins = [0, 0, 0, 0]
+
+   // Each array item represents an enemy
+   let totalWins = [0, 0, 0, 0] 
+
    for (let i =0; i <= 1000; i++){
-   // for (let i = 0; i < 1; i++){
+   // for (let i = 0; i < 1; i++){ // for debug
       let battleResult = simulateBattle()      
 
       for (let j = 0; j < 4; j++) {
@@ -208,14 +217,11 @@ function getPercentages() {
       }
    }
    return [totalWins[0]/10, totalWins[1]/10, totalWins[2]/10,totalWins[3]/10] // divide to get under 100
-   // return totalWins // over 1000
 }
 
-let winPercs = getPercentages() // returns an array
-// console.log(winPercs)
+// Get percentage of win out of 1000 battles
+let winPercs = getPercentages() 
 
-
-// replace '___ victory' or 'Fight!' with the percentages
 function showEnemyPerc(enemyCount, value) {
    let fightButton = document.querySelector(`body > div.app > div.content.dark-bg-text \
    > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
@@ -223,11 +229,9 @@ function showEnemyPerc(enemyCount, value) {
    
    fightButton.textContent = `${Math.round(value)}%`
 }
+
+// replace 'Fight!' with the percentages
 for (let i = 0; i < 4; i++) {
    showEnemyPerc(i+1, winPercs[i])  // site is 1-index
 }
-
-
 })() 
-
-//TODO: Fix the messy code
