@@ -19,11 +19,11 @@ function getWeapTrait() {
    div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
    div.col.weapon-selection > div:nth-child(2) > div > div > div > div.trait > span");
 
-   trait = trait.className
+   trait = trait.className;
    return trait.slice(0, trait.length-5);
 };
 
-let weapTrait = getWeapTrait() 
+let weapTrait = getWeapTrait();
 // console.log(weapTrait) // str, 'water', 'fire'
 
 // find bonus power, default to 0
@@ -92,14 +92,16 @@ let weapStats = getAllWeapStats()
 
 // find enemy traits
 function getEnemyTrait(enemyCount) {
-   let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
+   let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > \
+   div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
    div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-element > span`);
    trait = trait.className
    return trait.slice(0, trait.length-5);
 };
 
 function getEnemyPower(enemyCount) {
-   let power = document.querySelector(`body > div.app > div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
+   let power = document.querySelector(`body > div.app > div.content.dark-bg-text > div > div > div:nth-child(3) > \
+   div > div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
    div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-power`).textContent;
    return Number(power.slice(0, power.length-6))
 };
@@ -115,8 +117,9 @@ for (let i = 0; i < 4; i++) {
 // console.log(enemyTraits) // [Strs], ['water', 'fire', 'lighting']
 // console.log(enemyPowers) // [Ints], [2344, 8443, 2333]
 
-// Compute, generate random roll for each enemy
-const traitHeirarchy = {
+
+// Define each element's strength and weakness
+const elementMatchups = {
    // Element: [Strength, Weakness]
    fire: ["earth", "water"],
    earth: ["lightning", "fire"],
@@ -124,13 +127,14 @@ const traitHeirarchy = {
    water: ["fire", "lightning"]
 }
 
+// Loops through the weapon's stats
 function getWeaponPower() {
    let weaponPower = 1;
    let m;
    for (let i = 0; i < 3; i++) {
       let weaponTrait = weapStats[0][i] // str of trait
       let weaponStat = weapStats[1][i]  // int of stat power
-      if ( weaponStat === undefined ) { weaponStat = 0}
+      if ( weaponStat === undefined ) { weaponStat = 0} // should this be 0?
 
       // get m value
       if (heroTrait === weaponTrait) {
@@ -147,53 +151,54 @@ function getWeaponPower() {
 }
 
 function simulateBattle() {
+
    let weaponPower = getWeaponPower();
    let traitBonus = 0;
    let enemyRolls = []
    let heroRolls = [];
 
    let weapTraitBonus = 0
-   if (heroTrait === weapTrait) {weapTraitBonus += 0.075}
+   if (heroTrait === weapTrait) weapTraitBonus = 0.075;
 
    function rng(min, max) { // min inclusive, max exclusive
-      return Math.floor((Math.random() * (max-min) + min))
-      // if ((Math.floor((Math.random()) *100)) %2 === 0) {return -10} 
-      // return 10
+      return (Math.round((Math.random() * (max-min) + min))) * .01
    }
 
    for (let i = 0; i < 4; i++) {
       let enemyTrait = enemyTraits[i] 
       let enemyPower = enemyPowers[i]
 
-      // get trait bonus, lookup elements
+      // get trait bonus by looking up strength and weakness from 
+      // traitHeirarchy object
 
-      if (traitHeirarchy[heroTrait][0] === enemyTrait) { // hero trait is > enemy trait
-         traitBonus += 0.075
-      } else if (traitHeirarchy[heroTrait][1] === enemyTrait) { 
-         traitBonus -= 0.075
-      } 
+      // hero trait is strong against enemy trait
+      if (elementMatchups[heroTrait][0] === enemyTrait) traitBonus += 0.075
+
+      // hero trait is weak against enemy trait
+      else if (elementMatchups[heroTrait][1] === enemyTrait) traitBonus -= 0.075
 
       traitBonus = weapTraitBonus + traitBonus
-      // console.log(`${enemyTrait}  ${traitBonus}`)
 
       // Get enemy and player roll
 
-      enemyRolls.push((enemyPower + (enemyPower * (rng(-10, 11) * .01) )))
+      enemyRolls.push((enemyPower + (enemyPower * rng(-10, 10) )))
+
       let power = (weaponPower * heroPower + bonusPower)
-      heroRolls.push( (power + ( power * (rng(-10, 11)*.01) ) * (1 + traitBonus)))
+      let roll = (power + ( power * rng(-10, 10))) * (1 + traitBonus)
+
+      heroRolls.push(roll)
 
       traitBonus = 0
+
    }
-   // console.log(heroRolls)
-   // console.log(enemyRolls)
-   // console.log(  heroRolls[0]-enemyRolls[0], heroRolls[1]-enemyRolls[1],  heroRolls[2]-enemyRolls[2], heroRolls[3]-enemyRolls[3])
+
    return [heroRolls, enemyRolls];
 }
 
 function getPercentages() {
    let totalWins = [0, 0, 0, 0]
    for (let i =0; i <= 1000; i++){
-   // for (let i =0; i < 1; i++){
+   // for (let i = 0; i < 1; i++){
       let battleResult = simulateBattle()      
 
       for (let j = 0; j < 4; j++) {
@@ -216,7 +221,7 @@ function showEnemyPerc(enemyCount, value) {
    > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
    div.row.mb-3.flex-column.enemy-container > div.enemy-list > div:nth-child(${enemyCount}) > div > button > h1`)
    
-   fightButton.textContent = `${value}%`
+   fightButton.textContent = `${Math.round(value)}%`
 }
 for (let i = 0; i < 4; i++) {
    showEnemyPerc(i+1, winPercs[i])  // site is 1-index
