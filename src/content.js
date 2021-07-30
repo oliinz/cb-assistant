@@ -18,10 +18,11 @@ heroPower = Number(heroPower.replaceAll(',', ''));
 // find weapon trait 
 
 function getWeapTrait() {
-   let trait = document.querySelector("body > div.app > \
-   div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
-   div.col.weapon-selection > div:nth-child(2) > div > div > div > div.trait > span");
+   // let trait = document.querySelector("body > div.app > \
+   // div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
+   // div.col.weapon-selection > div:nth-child(2) > div > div > div > div.trait > span");
 
+   let trait = document.querySelector("body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > div.col.weapon-selection > div > div.weapon-icon-wrapper > div > div.glow-container.glow-4 > div.trait > span")
    trait = trait.className;
    return trait.slice(0, trait.length-5);
 };
@@ -56,12 +57,10 @@ function getBonusPower() {
 // find bonus power, default to 0
 
 let bonusPower = getBonusPower()
-// console.log(bonusPower) // Int
+console.log(bonusPower) // Int
 
 function getAllWeapStats() {
-   let statsDiv = document.querySelector("body > div > div.content.dark-bg-text > \
-   div > div > div:nth-child(3) > div > div.combat-enemy-container > \
-   div.col.weapon-selection > div:nth-child(2) > div > div > div.stats")
+   let statsDiv = document.querySelector("body > div.app > div.content.dark-bg-text > div > div > div:nth-child(3) > div > div.combat-enemy-container > div.col.weapon-selection > div > div.weapon-icon-wrapper > div > div.stats")
    let stats = statsDiv.querySelectorAll("span:not(.icon)") 
    let statTraits = []
    let statPowers = []
