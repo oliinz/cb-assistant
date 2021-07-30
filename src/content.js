@@ -56,7 +56,7 @@ function getBonusPower() {
 // find bonus power, default to 0
 
 let bonusPower = getBonusPower()
-console.log(bonusPower) // Int
+// console.log(bonusPower) // Int
 
 function getAllWeapStats() {
    let statsDiv = document.querySelector("body > div.app > div.content.dark-bg-text > div > \
