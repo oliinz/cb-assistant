@@ -6,14 +6,12 @@
 let heroTrait = document.querySelector('body > div > div.character-bar > div > \
  div.root.main-font > div.character-data-column.dark-bg-text > span.name.bold.character-name > span').classList[0];
 heroTrait = heroTrait.slice(0, heroTrait.length-5); 
-// console.log(heroTrait) // str, 'water', 'fire'
 
 // find hero power
 
 let heroPower = (document.querySelector('body > div > div.character-bar > div \
  > div.root.main-font > div.character-data-column.dark-bg-text > span.subtext.subtext-stats > span:nth-child(4)').textContent);
 heroPower = Number(heroPower.replaceAll(',', '')); 
-// console.log(heroPower) // int
 
 // find weapon trait 
 
@@ -21,13 +19,15 @@ function getWeapTrait() {
 
    let trait = document.querySelector("body > div > div.content.dark-bg-text > \
    div > div > div:nth-child(3) > div > div.combat-enemy-container > div.col.weapon-selection > \
-   div > div.weapon-icon-wrapper > div > div.glow-container.glow-4 > div.trait > span")
+   div > div.weapon-icon-wrapper > div > div.glow-container > div.trait > span")
+
+  // Note: query Selector should have div.glow-container without the .glow-# 
+
    trait = trait.className;
    return trait.slice(0, trait.length-5);
 };
 
 let weapTrait = getWeapTrait();
-// console.log(weapTrait) // str, 'water', 'fire'
 
 function getBonusPower() {
    let weapon = document.querySelector("body > div > div.content.dark-bg-text > \
@@ -56,7 +56,6 @@ function getBonusPower() {
 // find bonus power, default to 0
 
 let bonusPower = getBonusPower()
-// console.log(bonusPower) // Int
 
 function getAllWeapStats() {
    let statsDiv = document.querySelector("body > div.app > div.content.dark-bg-text > div > \
@@ -94,7 +93,6 @@ function getAllWeapStats() {
 // find weapon stats trait
 
 let weapStats = getAllWeapStats()
-// console.log(weapStats) // Array of arrays, [[stats], [powers]]
 
 function getEnemyTrait(enemyCount) {
    let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > \
@@ -234,4 +232,19 @@ function showEnemyPerc(enemyCount, value) {
 for (let i = 0; i < 4; i++) {
    showEnemyPerc(i+1, winPercs[i])  // site is 1-index
 }
+
+function debugStats() {
+   // prints gathered hero/weap/enemy data 
+
+   console.log(`HeroTrait:\t${heroTrait}`) // str, 'water', 'fire'
+   console.log(`HeroPower:\t${heroPower}`) // int
+   console.log(`WeaponTrait:\t${weapTrait}`) // str, 'water', 'fire'
+   console.log(`WeapBonusPower:\t${bonusPower}`) // Int
+   console.log(`WeapStats:\t${weapStats}`) // Array of arrays, [[stats], [powers]]
+   console.log(`EnemyTraits:\t${enemyTraits}`)
+   console.log(`EnemyPower:\t${enemyPowers}`)
+}
+
+// debugStats()
+
 })() 
