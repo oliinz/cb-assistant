@@ -33,6 +33,8 @@ function getBonusPower() {
    let weapon = document.querySelector("body > div > div.content.dark-bg-text > \
    div > div > div > div > div.combat-enemy-container > div.col.weapon-selection > \
    div > div > div > div")
+
+   // Simulate mouse hover
    let event = new MouseEvent('mouseenter', { 
       'view': window,
       'bubbles': true,
@@ -42,6 +44,7 @@ function getBonusPower() {
    weapon.dispatchEvent(event); // Send fake hover to show tooltip
 
    let tooltipId = document.querySelector(".weapon-icon.has-tooltip").getAttribute('aria-describedby')
+   // let tooltipId = document.querySelector(".tooltip.vue-tooltip-theme").getAttribute('aria-describedby')
    let tooltipText = document.getElementById(tooltipId).textContent
 
    try {
@@ -67,6 +70,7 @@ function getAllWeapStats() {
    for (stat of stats ) {
       let statTrait = stat.textContent.slice(0, 3)
       let statPower = Number(stat.textContent.slice(5, 9))
+
       switch (statTrait) {
          case 'PWR': 
             statTrait = 'power';
