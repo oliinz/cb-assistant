@@ -1,6 +1,23 @@
 // Immediately invoked fucntion
 (() => {
 
+// First, check if the character menu is hidden or not.
+
+let arrowButton =  document.querySelector("body > div > div.main-nav-div > \
+   div.container_row > button > svg")
+
+// If hidden, click it to toggle.   
+if (arrowButton.getAttribute('aria-label')  === "arrows expand") {
+   console.log("hidden")
+   let clickEvent = new MouseEvent('click', { 
+      'view': window,
+      'bubbles': true,
+      'cancelable': false
+   });
+
+   arrowButton.dispatchEvent(clickEvent); // Send fake click to show char stats
+}
+
 // Find hero trait
 
 let heroTrait = document.querySelector('body > div > div.character-bar > div > \
@@ -35,13 +52,13 @@ function getBonusPower() {
    div > div > div > div")
 
    // Simulate mouse hover
-   let event = new MouseEvent('mouseenter', { 
+   let hoverEvent = new MouseEvent('mouseenter', { 
       'view': window,
       'bubbles': true,
       'cancelable': true
    });
 
-   weapon.dispatchEvent(event); // Send fake hover to show tooltip
+   weapon.dispatchEvent(hoverEvent); // Send fake hover to show tooltip
 
    let tooltipId = document.querySelector(".weapon-icon.has-tooltip").getAttribute('aria-describedby')
    // let tooltipId = document.querySelector(".tooltip.vue-tooltip-theme").getAttribute('aria-describedby')
@@ -249,6 +266,7 @@ function debugStats() {
    console.log(`EnemyPower:\t${enemyPowers}`)
 }
 
+// Uncomment to see gathered data:
 // debugStats()
 
 })() 
