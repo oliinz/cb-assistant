@@ -9,6 +9,7 @@ let arrowButton =  document.querySelector("body > div > div.main-nav-div > \
 // If hidden, click it to toggle.   
 if (arrowButton.getAttribute('aria-label')  === "arrows expand") {
    console.log("hidden")
+
    let clickEvent = new MouseEvent('click', { 
       'view': window,
       'bubbles': true,
@@ -51,14 +52,14 @@ function getBonusPower() {
    div > div > div > div > div.combat-enemy-container > div.col.weapon-selection > \
    div > div > div > div")
 
-   // Simulate mouse hover
+   // create mouse hover event
    let hoverEvent = new MouseEvent('mouseenter', { 
       'view': window,
       'bubbles': true,
       'cancelable': true
    });
 
-   weapon.dispatchEvent(hoverEvent); // Send fake hover to show tooltip
+   weapon.dispatchEvent(hoverEvent); // Send fake hover event to show tooltip
 
    let tooltipId = document.querySelector(".weapon-icon.has-tooltip").getAttribute('aria-describedby')
    // let tooltipId = document.querySelector(".tooltip.vue-tooltip-theme").getAttribute('aria-describedby')
@@ -67,7 +68,7 @@ function getBonusPower() {
    try {
       let power = Number(/Bonus power: (\d)*/.exec(tooltipText)[0].slice(13, )) 
       return power
-      
+
    } catch (error) {
       return 0
    };
