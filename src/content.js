@@ -1,4 +1,4 @@
-// Immediately invoked fucntion
+// Immediately invoked function
 (() => {
 
 // First, check if the character menu is hidden or not.
@@ -117,17 +117,15 @@ function getAllWeapStats() {
 let weapStats = getAllWeapStats()
 
 function getEnemyTrait(enemyCount) {
-   let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > div:nth-child(3) > div > \
-   div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
-   div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-element > span`);
+   let trait = document.querySelector(`body > div > div.content.dark-bg-text > div > div > \
+   div:nth-child(3) > div > div.combat-enemy-container > div.row.mb-3.enemy-container > div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-element > span`)
    trait = trait.className
    return trait.slice(0, trait.length-5);
 };
 
 function getEnemyPower(enemyCount) {
-   let power = document.querySelector(`body > div.app > div.content.dark-bg-text > div > div > div:nth-child(3) > \
-   div > div.combat-enemy-container > div.row.mb-3.flex-column.enemy-container > div.enemy-list > \
-   div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-power`).textContent;
+   let power = document.querySelector(`body > div.app > div.content.dark-bg-text > div > \
+   div > div:nth-child(3) > div > div.combat-enemy-container > div.row.mb-3.enemy-container > div:nth-child(${enemyCount}) > div > div.enemy-character > div.encounter-power`).textContent;
    return Number(power.slice(0, power.length-6))
 };
 
@@ -137,8 +135,8 @@ let enemyTraits = []; // [Strs], ['water', 'fire', 'lighting']
 let enemyPowers = []; // [Ints], [2344, 8443, 2333]
 
 for (let i = 0; i < 4; i++) {
-   enemyTraits.push(getEnemyTrait(i+1))
-   enemyPowers.push(getEnemyPower(i+1))
+   enemyTraits.push(getEnemyTrait(i+2)) // 2 index
+   enemyPowers.push(getEnemyPower(i+2))
 }
 
 // Define each element's strength and weakness
@@ -243,16 +241,14 @@ function getPercentages() {
 let winPercs = getPercentages() 
 
 function showEnemyPerc(enemyCount, value) {
-   let fightButton = document.querySelector(`body > div.app > div.content.dark-bg-text \
-   > div > div > div:nth-child(3) > div > div.combat-enemy-container > \
-   div.row.mb-3.flex-column.enemy-container > div.enemy-list > div:nth-child(${enemyCount}) > div > button > h1`)
-   
+   let fightButton =  document.querySelector(`body > div.app > div.content.dark-bg-text > div > div > \
+   div:nth-child(3) > div > div.combat-enemy-container > div.row.mb-3.enemy-container > div:nth-child(${enemyCount}) > div > button > h1`)
    fightButton.textContent = `${Math.round(value)}%`
 }
 
 // replace 'Fight!' with the percentages
 for (let i = 0; i < 4; i++) {
-   showEnemyPerc(i+1, winPercs[i])  // site is 1-index
+   showEnemyPerc(i+2, winPercs[i])  // site is 1-index
 }
 
 function debugStats() {
